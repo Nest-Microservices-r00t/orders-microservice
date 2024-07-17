@@ -1,15 +1,16 @@
-import { Controller, ParseUUIDPipe } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Controller, Inject, ParseUUIDPipe } from '@nestjs/common';
+import { ClientProxy, MessagePattern, Payload } from '@nestjs/microservices';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { ChangeOrderStatusDto, OrderPaginationDto } from './dto';
-import { OrderStatus } from '@prisma/client';
-import { PaginationDto } from '../common/dtos/pagination.dto';
+import { PRODUCT_SERVICE } from 'src/config';
 
 
 @Controller()
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) { }
+  constructor(
+    private readonly ordersService: OrdersService,
+  ) { }
 
   @MessagePattern('createOrder')
   create(@Payload() createOrderDto: CreateOrderDto) {
